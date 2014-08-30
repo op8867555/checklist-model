@@ -51,6 +51,17 @@ angular.module('checklist-model', [])
     var getter = $parse(attrs.checklistModel);
     var setter = getter.assign;
 
+    // sort function
+    var sort;
+    if (attrs.checklistSortBy){
+      sort = function (arr) {
+        var sortBy = $parse(attrs.checklistSortBy)(scope);
+        return arr.sort(sortBy);
+      } 
+    } else {
+      sort = function (arr) { return arr; };
+    }
+
     // value added to list
     var value = $parse(attrs.checklistValue)(scope.$parent);
 
@@ -61,9 +72,9 @@ angular.module('checklist-model', [])
       } 
       var current = getter(scope.$parent);
       if (newValue === true) {
-        setter(scope.$parent, add(current, value));
+        setter(scope.$parent, sort(add(current, value)));
       } else {
-        setter(scope.$parent, remove(current, value));
+        setter(scope.$parent, sort(remove(current, value)));
       }
     });
 
