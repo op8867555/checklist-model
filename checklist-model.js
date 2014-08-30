@@ -53,10 +53,10 @@ angular.module('checklist-model', [])
 
     // sort function
     var sort;
-    if (attrs.checklistSortBy){
+    if (attrs.checklistSortFn){
       sort = function (arr) {
-        var sortBy = $parse(attrs.checklistSortBy)(scope);
-        return arr.sort(sortBy);
+        var sortFn = $parse(attrs.checklistSortFn)(scope);
+        return arr.sort(sortFn);
       } 
     } else {
       sort = function (arr) { return arr; };
